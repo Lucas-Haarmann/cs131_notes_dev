@@ -14,7 +14,7 @@ There are many use cases for 3D reconstruction, including:
 
 1. **Navigation in Robotics, Drones, and Cars**. 3D reconstruction helps these devices  understand the 3D world better from 2D images captured by cameras.
 2. **Augmented Reality (AR)**. 3D reconstruction helps localize your phone in the 3D world around it in order to place images realistically within a 3D scene.
-3. **Movies, Digital Preservation, "Photo Tourism."** 3D reconstruction is also useful for special FX and digital scanning of artificats.
+3. **Movies, Digital Preservation, "Photo Tourism."** 3D reconstruction is also useful for special FX and digital scanning of artifacts.
 
 ### Review: Different Approaches to 3D Reconstruction
 Suppose we have a set of images that all contain different views of the same 3D figure. Each camera can be specified with the parameters $K$, $R$, and $t$.
