@@ -1,3 +1,9 @@
+---
+title: Structure From Motion
+keywords: (insert comma-separated keywords here)
+order: 12
+---
+
 # Structure From Motion
 ## SfM Problem Definition
 Can we do 3D reconstruction when we have nothing besides images (no intrinsics, no extrinsics, 3D points)?
