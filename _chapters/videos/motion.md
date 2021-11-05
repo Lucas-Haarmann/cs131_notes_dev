@@ -9,26 +9,28 @@ Structure from Motion (SfM) is a computer vision technique that uses geometric p
 * Can we do 3D reconstruction when we have nothing besides images (no intrinsics, no extrinsics, 3D points)?
 * Can we generalize a 3D reconstruction solution to use more than two images?
 
-#### Motivation: Why do we care about 3D reconstruction?
-There are many use cases for 3D recon
+### Motivation: Why do we care about 3D reconstruction?
+There are many use cases for 3D reconstruction, including:
 
 1. **Navigation in Robotics, Drones, and Cars**. 3D reconstruction helps these devices  understand the 3D world better from 2D images captured by cameras.
 2. **Augmented Reality (AR)**. 3D reconstruction helps localize your phone in the 3D world around it in order to place images realistically within a 3D scene.
 3. **Movies, Digital Preservation, "Photo Tourism."** 3D reconstruction is also useful for special FX and digital scanning of artificats.
 
-#### Review: Calibration and Triangulation/Multi-view Stereo
+### Review: Calibration and Triangulation/Multi-view Stereo
 **Problem Set Up:** We have a set of known 2D points in an image and a set of its corresponding 3D points in the real world
 
-**Task:** Estimate the camera parameters (K, R, t)
+**Task:** Estimate the camera parameters $(K_i, R_, t)$
 
-<img src="https://imgur.com/MYqOjCE.png" width="400"/>
+<img src="https://imgur.com/MYqOjCE.png" width="600"/>
+
 Figure: Calibration problem setup ()
 
 **Problem Set Up:** We have a 2D point represented in multiple images taken from different cameras. We also know the camera parameters for each camera.
 
 **Task:** Estimate the corresponding 3D point.
 
-<img src="https://imgur.com/TaJAfon.png" width="400"/>
+<img src="https://imgur.com/TaJAfon.png" width="600"/>
+
 Figure: Triangulation problem set up ()
 
 #### Structure from Motion
@@ -36,7 +38,8 @@ Figure: Triangulation problem set up ()
 
 **Task:** Estimate the 3D points (i.e. the structure) and the camera parameters (i.e. motion)
 
-<img src="https://imgur.com/HvaMLkb.png" width="400"/>
+<img src="https://imgur.com/HvaMLkb.png" width="600"/>
+
 Figure: SfM problem set up ()
 
 Given many images, we want to know how can we:
@@ -59,17 +62,20 @@ That means we don't know for sure if the camera parameters K, R, and T are corre
 ## Finding 2D Correspondences
 The first step of generating the input to SfM is detecting features in the image set, which is typically done using SIFT but could also be done with methods such as deep learning or ORB-SLAM. The local features are then matched between pairs of images by representing the interest points as vectors and finding their nearest neighbors. The matching is made more robust by using RANSAC to counteract noise caused by correspondence problems (e.g. textureless surfaces, occlusions, repetitions, specularities). The epipolar constraint, $x’^{T}Fx = 0$, is utilized in matching because $x$ and $x’$ correspond to the same fixed 3D point.
 
-<img src="https://i.imgur.com/CkIRNJH.png" width="400"/>
+<img src="https://i.imgur.com/CkIRNJH.png" width="600"/>
+
 Figure: Point correspondence geometry (lecture 11, slide 50)
 
 Once the outliers have been removed, the fundamental matrix between each pair of images can be calculated.
 
 #### Correspondence Estimation
 A connected component is a 2D correspondence that is matched across multiple images like in the figure below that corresponds to a single 3D point present in all these images.
-<img src="https://i.imgur.com/95J9mAt.png" width="400"/>
+<img src="https://i.imgur.com/95J9mAt.png" width="600"/>
+
 Figure: Graph of nearest neighbors using 2D correspondences in an image set (lecture 12, slide 22)
 
-<img src="https://i.imgur.com/E9LggJh.png" width="400"/>
+<img src="https://i.imgur.com/E9LggJh.png" width="600"/>
+
 Figure: Connected component across images with 2D correspondences (lecture 12, slide 23)
 
 These connected components are found by searching the graph created in feature matching.
@@ -95,6 +101,7 @@ The first thing we would like to do is to utilize our fundamental matrix $F$ (as
 ##### Iteration
 With each additional view that we have, we will incrementally improve and extend our structure. We do this in two steps, **calibration** and **triangulation**. We define both: \
 **Calibration** involves better understanding the world around the camera according to this new image by determining the projection matrix $P$ in this new angle. We can do this by looking at our known 3D points and analyzing the points that are present in this view. One could image that some angles are only able to capture certain known points, and we can use this as a way of understanding (and hence, calibrating) our sense of direction in the world (via the projection matrix $P$). As we can see in these two illustrations below, as our camera's move around in the world, the points they have access to may vary— we use this to our advantage in our to calibrate via the projection matrix and by better understand our existing knowledge about points in the next process, triangulation.
+
  ![](https://i.imgur.com/zYvrshc.png) ![](https://i.imgur.com/uqB8nmd.png)
 
 Figure: Camera in motion capturing points (lecture 12, slide 36,37,38)
